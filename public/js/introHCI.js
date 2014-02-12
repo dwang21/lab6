@@ -27,6 +27,35 @@ function addProjectDetails(e) {
 	var idNumber = projectID.substr('project'.length);
 
 	console.log("User clicked on project " + idNumber);
+	var projectURL = "/project/" + idNumber;
+ 	$.get(projectURL, callback);
+ 	console.log("URL that I am calling is " + projectURL);
+}
+
+function callback(response) {
+	console.log("Response is " + response);
+
+	var projectHTML = '<img src = "' + response.image + '" class=detailsImage>' +
+					  '<h4>' + response.title + '</h4>' + 
+					  '<p>' + response.date + '</p>' + 
+					  response.summary; 
+
+	$("div#project" + response.id + " div.details").html(projectHTML);
+/*	var idNumber = result.id;
+	var detailsSelector = "div#project" + idNumber + " div.details";
+
+	var htmlInsert = 
+		'<img src="' + result.image + '" class="detailsImage">' +
+		'<h3>' + result.title + '</h3>' +
+		'<p><small>' + result.date + '</small></p>' +
+		'<p>' + result.summary + '</p>';
+
+	//result.id. result.title, result.date, result.summary, result.image
+	//include image, small header with date, and summary
+	//Give the image the class detailsImage
+
+	$(detailsSelector).html(htmlInsert);*/
+
 }
 
 /*
@@ -35,4 +64,14 @@ function addProjectDetails(e) {
  */
 function randomizeColors(e) {
 	console.log("User clicked on color button");
+	$.get("/palette", callbackPalette);
+}
+
+function callbackPalette(response) {
+	var colors = response.colors.hex; 
+	$('body').css('background-color', colors[0]);
+	$('.thumbnail').css('background-color', colors[1]);
+	$('h1, h2, h3, h4, h5, h5').css('color', colors[2]);
+	$('p').css('color', colors[3]);
+	$('.project img').css('opacity', .75);
 }
